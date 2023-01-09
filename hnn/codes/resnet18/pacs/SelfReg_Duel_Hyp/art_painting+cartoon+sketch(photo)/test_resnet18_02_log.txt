@@ -1,0 +1,16 @@
+Test:  [128/2048 (6%)],	Accuracy: 89.8%,  	 Loss: 0.363492
+Test:  [256/2048 (12%)],	Accuracy: 85.9%,  	 Loss: 0.622768
+Test:  [384/2048 (19%)],	Accuracy: 82.3%,  	 Loss: 1.089914
+Test:  [512/2048 (25%)],	Accuracy: 80.1%,  	 Loss: 0.917931
+Test:  [640/2048 (31%)],	Accuracy: 78.1%,  	 Loss: 1.097205
+Test:  [768/2048 (38%)],	Accuracy: 80.1%,  	 Loss: 0.359430
+Test:  [896/2048 (44%)],	Accuracy: 80.5%,  	 Loss: 0.639406
+Test:  [1024/2048 (50%)],	Accuracy: 79.9%,  	 Loss: 0.800257
+Test:  [1152/2048 (56%)],	Accuracy: 79.4%,  	 Loss: 0.939538
+Test:  [1280/2048 (62%)],	Accuracy: 80.0%,  	 Loss: 0.447356
+Test:  [1408/2048 (69%)],	Accuracy: 80.4%,  	 Loss: 0.489994
+Test:  [1536/2048 (75%)],	Accuracy: 81.2%,  	 Loss: 0.290576
+Test:  [1664/2048 (81%)],	Accuracy: 80.6%,  	 Loss: 0.996166
+Test:  [1792/2048 (88%)],	Accuracy: 80.0%,  	 Loss: 1.181014
+Test:  [1920/2048 (94%)],	Accuracy: 78.8%,  	 Loss: 1.797187
+Test:  [2048/2048 (100%)],	Accuracy: 77.4%,  	 Loss: 1.899397

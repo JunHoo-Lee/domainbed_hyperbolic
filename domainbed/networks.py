@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models
-
+import domainbed.hyptorch.nn as hyp
 from domainbed.lib import wide_resnet
 import copy
 
@@ -195,7 +195,7 @@ def Featurizer(input_shape, hparams):
         raise NotImplementedError
 
 
-def Classifier(in_features, out_features, is_nonlinear=False):
+def Classifier(in_features, out_features, is_nonlinear=False, is_hyp=False):
     if is_nonlinear:
         return torch.nn.Sequential(
             torch.nn.Linear(in_features, in_features // 2),
@@ -203,6 +203,11 @@ def Classifier(in_features, out_features, is_nonlinear=False):
             torch.nn.Linear(in_features // 2, in_features // 4),
             torch.nn.ReLU(),
             torch.nn.Linear(in_features // 4, out_features))
+    elif is_hyp:
+        return torch.nn.Sequential(
+            hyp.ToPoincare(c = 0.1, clip_r = 1),
+            hyp.HyperbolicMLR(in_features, out_features, 0.1))
+
     else:
         return torch.nn.Linear(in_features, out_features)
 

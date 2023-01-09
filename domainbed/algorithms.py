@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.autograd as autograd
+import domainbed.hyptorch.nn as hyp
 
 import copy
 import numpy as np
@@ -95,7 +96,8 @@ class ERM(Algorithm):
         self.classifier = networks.Classifier(
             self.featurizer.n_outputs,
             num_classes,
-            self.hparams['nonlinear_classifier'])
+            self.hparams['nonlinear_classifier'],
+            self.hparams['hyperbolic_classifier'])
 
         self.network = nn.Sequential(self.featurizer, self.classifier)
         self.optimizer = torch.optim.Adam(
@@ -107,7 +109,10 @@ class ERM(Algorithm):
     def update(self, minibatches, unlabeled=None):
         all_x = torch.cat([x for x, y in minibatches])
         all_y = torch.cat([y for x, y in minibatches])
-        loss = F.cross_entropy(self.predict(all_x), all_y)
+        feature = self.feature(all_x)
+        all_norm = torch.norm(feature, dim=-1, keepdim=True)
+        loss = F.cross_entropy(self.classify(feature), all_y)
+        loss += self.hparams['radius_reg']*torch.var(all_norm) 
 
         self.optimizer.zero_grad()
         loss.backward()
@@ -118,6 +123,11 @@ class ERM(Algorithm):
     def predict(self, x):
         return self.network(x)
 
+    def feature(self, x):
+        return self.featurizer(x)
+
+    def classify(self, x):
+        return self.classifier(x)
 
 class Fish(Algorithm):
     """

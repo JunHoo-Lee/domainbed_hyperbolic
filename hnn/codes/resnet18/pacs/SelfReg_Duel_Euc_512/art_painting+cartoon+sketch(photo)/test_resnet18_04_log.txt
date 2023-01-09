@@ -1,0 +1,14 @@
+Test:  [128/1670 (7%)],	Accuracy: 88.3%,  	 Loss: 0.395819
+Test:  [256/1670 (14%)],	Accuracy: 92.2%,  	 Loss: 0.124788
+Test:  [384/1670 (21%)],	Accuracy: 93.2%,  	 Loss: 0.213405
+Test:  [512/1670 (29%)],	Accuracy: 93.2%,  	 Loss: 0.213422
+Test:  [640/1670 (36%)],	Accuracy: 94.2%,  	 Loss: 0.099443
+Test:  [768/1670 (43%)],	Accuracy: 94.4%,  	 Loss: 0.196596
+Test:  [896/1670 (50%)],	Accuracy: 90.5%,  	 Loss: 1.294939
+Test:  [1024/1670 (57%)],	Accuracy: 91.6%,  	 Loss: 0.020715
+Test:  [1152/1670 (64%)],	Accuracy: 92.5%,  	 Loss: 0.000006
+Test:  [1280/1670 (71%)],	Accuracy: 93.3%,  	 Loss: 0.000311
+Test:  [1408/1670 (79%)],	Accuracy: 93.9%,  	 Loss: 0.000389
+Test:  [1536/1670 (86%)],	Accuracy: 94.4%,  	 Loss: 0.000443
+Test:  [1664/1670 (93%)],	Accuracy: 94.8%,  	 Loss: 0.000985
+Test:  [1670/1670 (100%)],	Accuracy: 94.9%,  	 Loss: 0.001835

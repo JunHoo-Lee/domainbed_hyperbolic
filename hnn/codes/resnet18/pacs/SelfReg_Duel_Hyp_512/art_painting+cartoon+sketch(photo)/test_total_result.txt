@@ -1,0 +1,48 @@
+Sketch: 72.56Cartoon: 75.34Artwork: 79.59Photo: 96.23
+Sketch: 72.16Cartoon: 76.02Artwork: 78.86Photo: 96.11
+Sketch: 72.03Cartoon: 74.87Artwork: 78.71Photo: 96.53
+Sketch: 72.77Cartoon: 74.36Artwork: 80.71Photo: 96.65
+Sketch: 71.82Cartoon: 75.85Artwork: 78.76Photo: 96.71
+--- From now on, No duel. Just add
+Sketch: 71.14Cartoon: 76.32Artwork: 79.79Photo: 96.35
+Sketch: 70.27Cartoon: 77.22Artwork: 78.91Photo: 96.23
+Sketch: 71.37Cartoon: 75.85Artwork: 79.05Photo: 96.59
+Sketch: 73.05Cartoon: 76.92Artwork: 79.69Photo: 96.29
+Sketch: 71.93Cartoon: 75.85Artwork: 80.18Photo: 96.23
+--- From now on, No duel. Just add with same clipping radius
+Sketch: 72.64Sketch: 73.5Sketch: 68.67Cartoon: 75.04Artwork: 78.86Photo: 96.29
+Sketch: 71.75Cartoon: 74.87Artwork: 77.83Photo: 96.71
+Sketch: 68.85Cartoon: 76.62Artwork: 77.29Photo: 95.99
+Sketch: 70.68
+
+--Clip R is 2---
+Sketch: 70.93Cartoon: 74.91Artwork: 79.25Photo: 96.35
+Sketch: 71.93Cartoon: 75.51Artwork: 79.59Photo: 96.59
+Sketch: 70.6Cartoon: 76.07Artwork: 78.76Photo: 96.23
+Sketch: 72.64Cartoon: 74.23
+--Clip R is 2, split by 4---
+Artwork: 80.18Sketch: 76.81Cartoon: 20.22Artwork: 81.84Photo: 94.91
+Cartoon: 74.19
+Cartoon: 12.88
+Cartoon: 49.36
+Cartoon: 19.24
+Cartoon: 16.64
+Cartoon: 17.83
+Cartoon: 77.86
+Sketch: 77.14Cartoon: 75.98Artwork: 80.27Photo: 95.21
+Sketch: 77.42Cartoon: 77.26Artwork: 80.71Photo: 94.97
+Sketch: 76.43Cartoon: 76.79Photo: 94.67Artwork: 80.66Cartoon: 76.75Sketch: 75.34
+Photo: 95.39Artwork: 79.39Cartoon: 19.24Sketch: 80.91
+Photo: 95.75Artwork: 24.17Cartoon: 17.02Sketch: 76.23
+Photo: 95.21Artwork: 18.99Cartoon: 77.47Sketch: 74.62
+Photo: 95.45Artwork: 81.74Cartoon: 77.09Sketch: 75.57
+Photo: 95.51Artwork: 80.81Cartoon: 77.01Sketch: 79.41
+Photo: 95.33Artwork: 81.64Cartoon: 76.71Sketch: 74.98
+Photo: 95.33Artwork: 79.35Cartoon: 76.83Sketch: 75.36
+Photo: 95.51Artwork: 81.49Cartoon: 77.43Sketch: 75.67
+Photo: 95.09Artwork: 81.01Cartoon: 77.73Sketch: 75.54
+Photo: 34.01Sketch: 78.47Artwork: 80.37Sketch: 75.16Sketch: 76.51Cartoon: 9.73Sketch: 72.16Sketch: 77.27
+Sketch: 71.52Sketch: 73.15Photo: 18.2Artwork: 80.76Sketch: 73.48Cartoon: 12.63Sketch: 77.65
+Sketch: 76.08Photo: 95.51Cartoon: 76.49Artwork: 24.37Artwork: 80.47Cartoon: 77.26Sketch: 76.99
+Photo: 11.44Artwork: 79.88Cartoon: 16.25Sketch: 76.97
+Photo: 29.34Artwork: 79.54Cartoon: 77.94Sketch: 79.1
