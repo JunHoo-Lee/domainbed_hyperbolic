@@ -5,6 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models
 import domainbed.hyptorch.nn as hyp
+from domiainbed.hyptorch.pmath import mobius_add
 from domainbed.lib import wide_resnet
 import copy
 
@@ -22,12 +23,16 @@ def remove_batch_norm_from_resnet(model):
                 for name2, module2 in bottleneck.named_modules():
                     if name2.startswith("conv"):
                         bn_name = "bn" + name2[-1]
-                        setattr(bottleneck, name2,
-                                fuse(module2, getattr(bottleneck, bn_name)))
+                        setattr(
+                            bottleneck,
+                            name2,
+                            fuse(module2, getattr(bottleneck, bn_name)),
+                        )
                         setattr(bottleneck, bn_name, Identity())
                 if isinstance(bottleneck.downsample, torch.nn.Sequential):
-                    bottleneck.downsample[0] = fuse(bottleneck.downsample[0],
-                                                    bottleneck.downsample[1])
+                    bottleneck.downsample[0] = fuse(
+                        bottleneck.downsample[0], bottleneck.downsample[1]
+                    )
                     bottleneck.downsample[1] = Identity()
     model.train()
     return model
@@ -35,6 +40,7 @@ def remove_batch_norm_from_resnet(model):
 
 class Identity(nn.Module):
     """An identity layer"""
+
     def __init__(self):
         super(Identity, self).__init__()
 
@@ -44,14 +50,18 @@ class Identity(nn.Module):
 
 class MLP(nn.Module):
     """Just  an MLP"""
+
     def __init__(self, n_inputs, n_outputs, hparams):
         super(MLP, self).__init__()
-        self.input = nn.Linear(n_inputs, hparams['mlp_width'])
-        self.dropout = nn.Dropout(hparams['mlp_dropout'])
-        self.hiddens = nn.ModuleList([
-            nn.Linear(hparams['mlp_width'], hparams['mlp_width'])
-            for _ in range(hparams['mlp_depth']-2)])
-        self.output = nn.Linear(hparams['mlp_width'], n_outputs)
+        self.input = nn.Linear(n_inputs, hparams["mlp_width"])
+        self.dropout = nn.Dropout(hparams["mlp_dropout"])
+        self.hiddens = nn.ModuleList(
+            [
+                nn.Linear(hparams["mlp_width"], hparams["mlp_width"])
+                for _ in range(hparams["mlp_depth"] - 2)
+            ]
+        )
+        self.output = nn.Linear(hparams["mlp_width"], n_outputs)
         self.n_outputs = n_outputs
 
     def forward(self, x):
@@ -68,9 +78,10 @@ class MLP(nn.Module):
 
 class ResNet(torch.nn.Module):
     """ResNet with the softmax chopped off and the batchnorm frozen"""
+
     def __init__(self, input_shape, hparams):
         super(ResNet, self).__init__()
-        if hparams['resnet18']:
+        if hparams["resnet18"]:
             self.network = torchvision.models.resnet18(pretrained=True)
             self.n_outputs = 512
         else:
@@ -85,8 +96,8 @@ class ResNet(torch.nn.Module):
             tmp = self.network.conv1.weight.data.clone()
 
             self.network.conv1 = nn.Conv2d(
-                nc, 64, kernel_size=(7, 7),
-                stride=(2, 2), padding=(3, 3), bias=False)
+                nc, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False
+            )
 
             for i in range(nc):
                 self.network.conv1.weight.data[:, i, :, :] = tmp[:, i % 3, :, :]
@@ -97,7 +108,7 @@ class ResNet(torch.nn.Module):
 
         self.freeze_bn()
         self.hparams = hparams
-        self.dropout = nn.Dropout(hparams['resnet_dropout'])
+        self.dropout = nn.Dropout(hparams["resnet_dropout"])
 
     def forward(self, x):
         """Encode x into a feature vector of size n_outputs."""
@@ -123,6 +134,7 @@ class MNIST_CNN(nn.Module):
     - adding a linear layer after the mean-pool in features hurts
         RotatedMNIST-100 generalization severely.
     """
+
     n_outputs = 128
 
     def __init__(self, input_shape):
@@ -188,26 +200,78 @@ def Featurizer(input_shape, hparams):
     elif input_shape[1:3] == (28, 28):
         return MNIST_CNN(input_shape)
     elif input_shape[1:3] == (32, 32):
-        return wide_resnet.Wide_ResNet(input_shape, 16, 2, 0.)
+        return wide_resnet.Wide_ResNet(input_shape, 16, 2, 0.0)
     elif input_shape[1:3] == (224, 224):
         return ResNet(input_shape, hparams)
     else:
         raise NotImplementedError
 
 
-def Classifier(in_features, out_features, is_nonlinear=False, is_hyp=False):
+"""
+### Hyperbolic options
+
+1. required hyperparameters
+- clip_r, c, (if adds) both adders.
+2. options
+- Naive exponential mapping
+- Hyperbolic addr on xs
+- one for exponential,the other for x.
+
+3 options, and 4 hyperparameters. 12 combinations.
+
+Then, we should send dicts in this case.
+
+A dictionary should contain
+
+1. hyperbolic options
+2. hyperbolic hyperparameters
+"""
+
+
+class hyperbolic_classifier(nn.Module):
+    def __init__(self, in_features, out_features, hparams):
+        super(hyperbolic_classifier, self).__init__()
+        self.c = hparams["c"]
+        self.clip_r = hparams["clip_r"]
+        self.add_c = hparams["add_c"]
+        self.method = hparams["method"]
+        self.to_poincare = hyp.ToPoincare(c=self.c, clip_r=self.clip_r)
+        self.classifier = hyp.HyperbolicMLR(in_features, out_features, self.c)
+
+    def forward(self, x):
+        """
+        Brief explanation on the methods:
+        - exp: use the exponential mapping to get the hyperbolic embedding
+        - tan: use the output x as the hyperbolic embedding
+        - exp_tan: use the exp_mapping tangent as the hyperbolic embedding
+        - tan_tan: use the tangent of the input x as the hyperbolic embedding
+        """
+        if self.method == "exp":
+            x = self.to_poincare(x)
+            return self.classifier(x)
+        elif self.method == "exp_tan":
+            exp_x = self.to_poincare(x)
+            x = mobius_add(exp_x, x, c=self.add_c)
+            return self.classifier(x)
+        elif self.method == "tan_tan":
+            x = mobius_add(x, x, c=self.add_c)
+            return self.classifier(x)
+        return self.network(x)
+
+
+def Classifier(
+    in_features, out_features, is_nonlinear=False, is_hyp=False, hparams=None
+):
     if is_nonlinear:
         return torch.nn.Sequential(
             torch.nn.Linear(in_features, in_features // 2),
             torch.nn.ReLU(),
             torch.nn.Linear(in_features // 2, in_features // 4),
             torch.nn.ReLU(),
-            torch.nn.Linear(in_features // 4, out_features))
+            torch.nn.Linear(in_features // 4, out_features),
+        )
     elif is_hyp:
-        return torch.nn.Sequential(
-            hyp.ToPoincare(c = 0.1, clip_r = 1),
-            hyp.HyperbolicMLR(in_features, out_features, 0.1))
-
+        return hyperbolic_classifier(in_features, out_features, hparams)
     else:
         return torch.nn.Linear(in_features, out_features)
 
@@ -217,12 +281,9 @@ class WholeFish(nn.Module):
         super(WholeFish, self).__init__()
         featurizer = Featurizer(input_shape, hparams)
         classifier = Classifier(
-            featurizer.n_outputs,
-            num_classes,
-            hparams['nonlinear_classifier'])
-        self.net = nn.Sequential(
-            featurizer, classifier
+            featurizer.n_outputs, num_classes, hparams["nonlinear_classifier"]
         )
+        self.net = nn.Sequential(featurizer, classifier)
         if weights is not None:
             self.load_state_dict(copy.deepcopy(weights))
 
