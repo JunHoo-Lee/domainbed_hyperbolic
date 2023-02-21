@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models
 import domainbed.hyptorch.nn as hyp
-from domiainbed.hyptorch.pmath import mobius_add
+import domainbed.hyptorch.pmath as pmath
 from domainbed.lib import wide_resnet
 import copy
 
@@ -251,10 +251,10 @@ class hyperbolic_classifier(nn.Module):
             return self.classifier(x)
         elif self.method == "exp_tan":
             exp_x = self.to_poincare(x)
-            x = mobius_add(exp_x, x, c=self.add_c)
+            x = pmath.mobius_add(exp_x, x, c=self.add_c)
             return self.classifier(x)
         elif self.method == "tan_tan":
-            x = mobius_add(x, x, c=self.add_c)
+            x = pmath.mobius_add(x, x, c=self.add_c)
             return self.classifier(x)
         return self.network(x)
 
