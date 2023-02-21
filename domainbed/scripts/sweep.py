@@ -19,7 +19,7 @@ import numpy as np
 import torch
 import sys
 
-sys.path.append("../..")
+sys.path.append(".")
 
 from domainbed import datasets
 from domainbed import hparams_registry
