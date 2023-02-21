@@ -22,7 +22,7 @@ import sys
 [sys.path.append(i) for i in [".", "..", "../..", "../../.."]]
 sys.path
 
-print("testing..")
+print("testing..", sys.path)
 from domainbed import datasets
 from domainbed import hparams_registry
 from domainbed import algorithms
