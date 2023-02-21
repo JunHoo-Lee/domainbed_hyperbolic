@@ -20,8 +20,8 @@ import torch
 import sys
 
 sys.path.append("/workspace")
+sys.path.append("/workspace/domainbed")
 
-print("testing..", sys.path)
 from domainbed import datasets
 from domainbed import hparams_registry
 from domainbed import algorithms
