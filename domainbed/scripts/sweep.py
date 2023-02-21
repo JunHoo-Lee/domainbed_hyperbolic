@@ -19,7 +19,7 @@ import numpy as np
 import torch
 import sys
 
-sys.path.append(".")
+[sys.path.append(i) for i in [".", "..", "../..", "../../.."]]
 
 from domainbed import datasets
 from domainbed import hparams_registry
@@ -158,6 +158,7 @@ def ask_for_confirmation():
 
 DATASETS = [d for d in datasets.DATASETS if "Debug" not in d]
 if __name__ == "__main__":
+    sys.path.append(".")
     parser = argparse.ArgumentParser(description="Run a sweep")
     parser.add_argument("command", choices=["launch", "delete_incomplete"])
     parser.add_argument("--datasets", nargs="+", type=str, default=DATASETS)
