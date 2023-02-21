@@ -19,8 +19,7 @@ import numpy as np
 import torch
 import sys
 
-[sys.path.append(i) for i in [".", "..", "../..", "../../.."]]
-sys.path
+sys.path.append("/workspace")
 
 print("testing..", sys.path)
 from domainbed import datasets
