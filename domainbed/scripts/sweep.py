@@ -19,8 +19,8 @@ import numpy as np
 import torch
 import sys
 
-sys.path.append("/workspace")
-sys.path.append("/workspace/domainbed")
+sys.path.append("../../domainbed")
+sys.path.append("../../..")
 
 from domainbed import datasets
 from domainbed import hparams_registry
